@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>hikari</title>
+    <style>
+
+      body {
+        padding: 50px;
+      }
+
+      .lightbox {
+        display: inline-block;
+      }
+
+      .lightbox img {
+        width: 300px;
+      }
+
+      .lightbox img:hover {
+        cursor: pointer;
+      }
+
+      .veil {
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: flex;
+        height: 100vh;
+        justify-content: center;
+        left: 0;
+        position: fixed;
+        top: 0;
+        width: 100vw;
+        z-index: 0;
+      }
+
+      .veil:hover {
+        cursor: pointer;
+      }
+
+      .focused img {
+        max-height: 90vh;
+        max-width: 90vw;
+      }
+
+      .invisible {
+        display: none;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="lightbox">
+      <img src="http://placehold.it/400x300" data-original="http://placehold.it/1600x1200">
+    </div>
+    <div class="lightbox">
+      <img src="http://placehold.it/400x300/000000/ffffff" data-original="http://placehold.it/1600x1200/ffffff/000000">
+    </div>
+
+    <script type="text/javascript">
+
+      var veil = document.createElement('div');
+      veil.classList.add('veil', 'invisible');
+      var focused = document.createElement('div');
+      focused.classList.add('focused');
+
+      veil.appendChild(focused);
+      document.querySelector('body').appendChild(veil);
+
+      veil.addEventListener('click', function (event) {
+        veil.classList.add('invisible');
+      });
+
+      var images = Array.apply(null, document.querySelectorAll('.lightbox img'));
+
+      images.forEach(image => {
+        image.addEventListener('click', function (event) {
+          var focusedImage = document.createElement('img');
+          focusedImage.setAttribute('src', image.getAttribute('data-original'));
+          focused.innerHTML = '';
+          focused.appendChild(focusedImage);
+          veil.classList.remove('invisible');
+        });
+      });
+
+    </script>
+  </body>
+</html>

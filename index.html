@@ -9,15 +9,16 @@
         padding: 50px;
       }
 
-      .lightbox {
+      .hikari {
         display: inline-block;
       }
 
-      .lightbox img {
+      .hikari img {
         width: 300px;
+        z-index: 2;
       }
 
-      .lightbox img:hover {
+      .hikari img:hover {
         cursor: pointer;
       }
 
@@ -50,38 +51,52 @@
     </style>
   </head>
   <body>
-    <div class="lightbox">
+    <div class="hikari">
       <img src="http://placehold.it/400x300" data-original="http://placehold.it/1600x1200">
     </div>
-    <div class="lightbox">
+    <div class="hikari">
       <img src="http://placehold.it/400x300/000000/ffffff" data-original="http://placehold.it/1600x1200/ffffff/000000">
     </div>
 
     <script type="text/javascript">
 
-      var veil = document.createElement('div');
-      veil.classList.add('veil', 'invisible');
-      var focused = document.createElement('div');
-      focused.classList.add('focused');
+      function Hikari () {
+        var self = this;
 
-      veil.appendChild(focused);
-      document.querySelector('body').appendChild(veil);
+        function initElements () {
+          self.veil = document.createElement('div');
+          self.focused = document.createElement('div');
 
-      veil.addEventListener('click', function (event) {
-        veil.classList.add('invisible');
-      });
+          self.veil.classList.add('veil', 'invisible');
+          self.focused.classList.add('focused');
 
-      var images = Array.apply(null, document.querySelectorAll('.lightbox img'));
+          self.veil.appendChild(self.focused);
+          document.querySelector('body').appendChild(self.veil);
+        }
 
-      images.forEach(image => {
-        image.addEventListener('click', function (event) {
-          var focusedImage = document.createElement('img');
-          focusedImage.setAttribute('src', image.getAttribute('data-original'));
-          focused.innerHTML = '';
-          focused.appendChild(focusedImage);
-          veil.classList.remove('invisible');
-        });
-      });
+        function setEventHandlers () {
+          self.veil.addEventListener('click', function (event) {
+            self.veil.classList.add('invisible');
+          });
+
+          var images = Array.apply(null, document.querySelectorAll('.hikari img'));
+
+          images.forEach(function (image) {
+            image.addEventListener('click', function (event) {
+              var focusedImage = document.createElement('img');
+              focusedImage.setAttribute('src', image.getAttribute('data-original'));
+              self.focused.innerHTML = '';
+              self.focused.appendChild(focusedImage);
+              self.veil.classList.remove('invisible');
+            });
+          });
+        }
+
+        initElements();
+        setEventHandlers();
+      }
+
+      Hikari();
 
     </script>
   </body>
